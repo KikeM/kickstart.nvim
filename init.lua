@@ -225,6 +225,27 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
+  {
+    'robitx/gp.nvim',
+    config = function()
+      require('gp').setup()
+
+      -- or setup with your own config (see Install > Configuration in Readme)
+      -- require("gp").setup(config)
+
+      -- shortcuts might be setup here (see Usage > Shortcuts in Readme)
+      local function keymapOptions(desc)
+        return {
+          noremap = true,
+          silent = true,
+          nowait = true,
+          desc = 'GPT prompt ' .. desc,
+        }
+      end
+      vim.keymap.set({ 'n', 'i' }, '<C-g>c', '<cmd>GpChatNew<cr>', keymapOptions 'New Chat')
+    end,
+  },
+
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
@@ -661,6 +682,12 @@ require('lazy').setup({
           --     require('luasnip.loaders.from_vscode').lazy_load()
           --   end,
           -- },
+          {
+            'zbirenbaum/copilot-cmp',
+            config = function()
+              require('copilot_cmp').setup()
+            end,
+          },
         },
       },
       'saadparwaiz1/cmp_luasnip',
