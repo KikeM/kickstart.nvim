@@ -204,6 +204,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- [autocomand]
+vim.keymap.set('n', '<leader>rc', ':e ~/.config/nvim/init.lua<cr>')
+vim.keymap.set('n', '<leader>esp', ':e /Users/valbuena/Library/Application Support/espanso/match/base.yml<cr>')
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -225,6 +229,24 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
+  {
+    'zbirenbaum/copilot.lua',
+    cmd = 'Copilot',
+    event = 'InsertEnter',
+    config = function()
+      require('copilot').setup {
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      }
+    end,
+  },
+  {
+    'zbirenbaum/copilot-cmp',
+    config = function()
+      require('copilot_cmp').setup()
+    end,
+  },
+  { 'tpope/vim-fugitive' },
   {
     'robitx/gp.nvim',
     config = function()
@@ -561,7 +583,7 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -647,7 +669,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'isort', 'black' },
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
@@ -682,12 +704,6 @@ require('lazy').setup({
           --     require('luasnip.loaders.from_vscode').lazy_load()
           --   end,
           -- },
-          {
-            'zbirenbaum/copilot-cmp',
-            config = function()
-              require('copilot_cmp').setup()
-            end,
-          },
         },
       },
       'saadparwaiz1/cmp_luasnip',
@@ -762,6 +778,7 @@ require('lazy').setup({
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
+          { name = 'copilot' },
         },
       }
     end,
