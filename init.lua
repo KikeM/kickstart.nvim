@@ -83,6 +83,9 @@ I hope you enjoy your Neovim journey,
 
 P.S. You can delete this when you're done too. It's your config now! :)
 --]]
+--
+-- foldings
+vim.opt.foldmethod = 'marker'
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
@@ -229,6 +232,21 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
+  {
+    'iamcco/markdown-preview.nvim',
+    build = 'cd app && npm install',
+    init = function()
+      vim.g.mkdp_filetypes = { 'markdown' }
+    end,
+    ft = { 'markdown' },
+  },
+  { 'mzlogin/vim-markdown-toc' },
+  {
+    -- foldings
+    'chrisgrieser/nvim-origami',
+    event = 'BufReadPost', -- later or on keypress would prevent saving folds
+    opts = true, -- needed even when using default config
+  },
   {
     'zbirenbaum/copilot.lua',
     cmd = 'Copilot',
@@ -409,6 +427,7 @@ require('lazy').setup({
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
+      vim.keymap.set('n', '<C-p>', builtin.git_files, { desc = '[G]it [F]iles' })
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
